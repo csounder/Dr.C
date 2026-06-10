@@ -2,7 +2,7 @@
 
 Dr.C Standalone is the graphical Electron desktop application for AI-assisted Csound development. It features a dual-panel chat + code editor, design tree navigation, and live artifact preview.
 
-**Source:** [github.com/csounder/drc-standalone](https://github.com/csounder/drc-standalone)
+**Source:** [github.com/mateolarreaferro/DRC-Standalone](https://github.com/mateolarreaferro/DRC-Standalone)
 
 ---
 
@@ -125,8 +125,8 @@ csound --version
 ## 3 — Clone and Install
 
 ```bash
-git clone https://github.com/csounder/drc-standalone.git
-cd drc-standalone
+git clone https://github.com/mateolarreaferro/DRC-Standalone.git
+cd DRC-Standalone
 npm install
 ```
 

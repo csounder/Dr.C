@@ -2,7 +2,7 @@
 
 Dr.C Terminal is a full-featured TUI (terminal UI) for AI-assisted Csound development. It runs in any terminal on macOS, Linux, or Windows and is built with [Bun](https://bun.sh).
 
-**Source:** [github.com/csounder/drc-terminal](https://github.com/csounder/drc-terminal)
+**Source:** [github.com/mateolarreaferro/Dr.C](https://github.com/mateolarreaferro/Dr.C)
 
 ---
 
@@ -80,8 +80,8 @@ bun --version
 ## 3 — Clone and Install
 
 ```bash
-git clone https://github.com/csounder/drc-terminal.git
-cd drc-terminal
+git clone https://github.com/mateolarreaferro/Dr.C.git
+cd Dr.C
 bun install
 ```
 
