@@ -26,8 +26,9 @@ brew install csound
 
 ### Linux (Debian / Ubuntu)
 ```bash
-sudo apt update && sudo apt install csound
+sudo apt update && sudo apt install -y csound build-essential python3 unzip
 ```
+> `build-essential`, `python3`, and `unzip` are all required on Ubuntu 22.04 — install them in the same step as Csound.
 
 ### Linux (Fedora / RHEL)
 ```bash
@@ -81,49 +82,35 @@ bun --version
 
 ```bash
 git clone https://github.com/mateolarreaferro/Dr.C.git
-cd Dr.C
+cd Dr.C/opencode
 bun install
 ```
+> **Important:** `bun install` must be run from the `opencode/` subdirectory, not the repo root.
 
 `bun install` downloads all dependencies. It is fast (usually under 30 seconds).
 
 ---
 
-## 4 — Add Your API Key
 
-Copy the example env file and fill in at least one key:
+## 5 — Add Your API Key
+
+Dr.C stores keys in its own credential store. Run the auth command once:
 
 ```bash
-cp .env.example .env
+cd Dr.C/opencode && bun run dev -- auth login
 ```
 
-Open `.env` in any editor and add your key:
-
-```
-# Gemini 2.5 Flash — free from https://aistudio.google.com/apikey
-GEMINI_API_KEY=your_key_here
-
-# Optional fallbacks
-ANTHROPIC_API_KEY=
-OPENAI_API_KEY=
-```
-
-> The Gemini key must be an **AI Studio** key from `aistudio.google.com` — NOT a Vertex AI service account. Vertex credentials won't authenticate against the free Developer API endpoint.
+Select **Google** from the provider list and paste your Gemini API key when prompted. The key is saved permanently — you won't need to do this again.
 
 ---
 
-## 5 — Run
+## 6 — Run
 
 ```bash
-bun run dev
+cd Dr.C/opencode && bun run dev
 ```
 
-This launches `drc`, the Dr.C TUI. You will see the welcome screen with Quick Start suggestions.
-
-To run the built binary directly after a `bun run build`:
-```bash
-./bin/drc
-```
+This launches `drc`, the Dr.C TUI. You will see the welcome screen with Quick Start suggestions. Type any prompt to begin — for example: `make a simple FM synthesizer`.
 
 ---
 
