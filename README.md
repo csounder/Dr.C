@@ -37,10 +37,13 @@ Choose one version (or both):
 
 Both versions shell out to the `csound` CLI. Install it once.
 
+> **All platforms:** Installers for macOS, Windows, and Linux are available at **[csound.com/download](https://csound.com/download.html)**. The per-platform commands below are the quickest route if you prefer a package manager.
+
 **macOS**
 ```bash
 brew install csound
 ```
+Or download the macOS `.pkg` installer from [csound.com/download](https://csound.com/download.html).
 
 **Linux (Debian/Ubuntu)**
 ```bash
