@@ -172,13 +172,23 @@ This bundles the app and opens the Electron window. Hot reload is active — cha
 
 ## macOS First Launch Warning
 
-The app is not code-signed. macOS Gatekeeper will say it is "damaged" or "cannot be opened." Fix it with one of:
+The app is not code-signed by an Apple-registered developer. macOS Gatekeeper will block it with a message like **"DrC is damaged and can't be opened"** or **"cannot be verified."** This is expected — the app is safe.
 
-- Right-click the app → **Open** → **Open**
-- Or run once in terminal:
-  ```bash
-  xattr -cr /Applications/DrC.app
-  ```
+**Fix — run this once in Terminal before launching:**
+```bash
+xattr -cr /Applications/DrC.app
+```
+
+Replace `/Applications/DrC.app` with the actual path if you placed the app elsewhere, e.g.:
+```bash
+xattr -cr ~/Downloads/DrC.app
+```
+
+After running this command, double-click the app normally and it will open. You only need to do this once.
+
+If you still see a warning after running the command, try:
+1. **System Settings → Privacy & Security** → scroll down to the blocked app → click **Open Anyway**
+2. Or right-click the app → **Open** → **Open** in the dialog that appears
 
 ---
 
@@ -231,6 +241,20 @@ sudo dnf install nss atk at-spi2-atk gtk3 libXScrnSaver alsa-lib
 ---
 
 ## Windows Notes
+
+### SmartScreen Warning (unsigned app)
+
+When you run the DrC installer or `.exe`, Windows Defender SmartScreen will show **"Windows protected your PC"** and block it. This is expected — the app is safe but not yet code-signed.
+
+**Fix:**
+1. In the SmartScreen dialog, click **"More info"**
+2. Click **"Run anyway"**
+
+That's it — Windows will remember your choice and won't block it again.
+
+If SmartScreen doesn't show "More info" (this can happen on managed/work machines), right-click the `.exe` → **Properties** → check **"Unblock"** at the bottom → **OK**, then run it again.
+
+### Other Windows notes
 
 - Node.js 20 LTS from nodejs.org includes everything you need.
 - `npm install` on Windows may need **windows-build-tools** if `better-sqlite3` compilation fails:
