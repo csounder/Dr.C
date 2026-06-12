@@ -27,7 +27,7 @@ Choose one version (or both):
 | Version | Best for | Requirements |
 |---|---|---|
 | **Dr.C Terminal** | Developers who live in the terminal | Bun 1.3.9+, Csound, API key |
-| **Dr.C Standalone** | Everyone; graphical Electron app | Node.js ≥ 20, Csound, API key |
+| **Dr.C Standalone** | Everyone; graphical Electron app | Node.js ≥ 22, Csound, API key |
 
 ---
 

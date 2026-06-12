@@ -10,7 +10,7 @@ Dr.C Standalone is the graphical Electron desktop application for AI-assisted Cs
 
 | Tool | Version | Notes |
 |---|---|---|
-| [Node.js](https://nodejs.org) | 20 or later (LTS) | npm is included |
+| [Node.js](https://nodejs.org) | 22 or later (LTS) | npm is included |
 | [Csound](https://csound.com/download.html) | 6.18+ or 7.x | Must be on your `PATH` |
 | AI API key | — | Gemini (free), Anthropic, or OpenAI |
 | Git | any | For cloning the repo |
@@ -29,7 +29,7 @@ Or download the LTS installer from [nodejs.org](https://nodejs.org).
 
 **Debian / Ubuntu:**
 ```bash
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 sudo apt install -y nodejs
 ```
 
