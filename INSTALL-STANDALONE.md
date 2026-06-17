@@ -1,8 +1,11 @@
-# Dr.C Standalone — Install Guide
+# Dr.C Standalone — Install Guide (Csound 7 Workshop Build)
 
-Dr.C Standalone is the graphical Electron desktop application for AI-assisted Csound development. It features a dual-panel chat + code editor, design tree navigation, and live artifact preview.
+Dr.C Standalone is the graphical Electron app for AI-assisted Csound development: chat + code editor, design tree, web synth export, and educational narration.
 
-**Source:** [github.com/mateolarreaferro/DRC-Standalone](https://github.com/mateolarreaferro/DRC-Standalone)
+**Source (build from here — do not use the old v1.3.0 .app alone):**  
+[github.com/mateolarreaferro/DRC-Standalone](https://github.com/mateolarreaferro/DRC-Standalone)
+
+> **Csound 7 required.** The v1.3.1+ workshop build targets Csound 7 for CLI render and `@csound/browser` 7 for web apps. Csound 6.18 on PATH causes poor first-shot codegen.
 
 ---
 
@@ -10,292 +13,281 @@ Dr.C Standalone is the graphical Electron desktop application for AI-assisted Cs
 
 | Tool | Version | Notes |
 |---|---|---|
-| [Node.js](https://nodejs.org) | 22 or later (LTS) | npm is included |
-| [Csound](https://csound.com/download.html) | 6.18+ or 7.x | Must be on your `PATH` |
+| [Node.js](https://nodejs.org) | 22 or later | npm included |
+| **Csound** | **7.x** | Must be first on your `PATH` |
 | AI API key | — | Gemini (free), Anthropic, or OpenAI |
-| Git | any | For cloning the repo |
+| Git | any | For cloning |
 
 ---
 
-## 1 — Install Node.js (v20 LTS or later)
+## 1 — Install Node.js (v22+)
 
 ### macOS
 ```bash
-brew install node
-```
-Or download the LTS installer from [nodejs.org](https://nodejs.org).
-
-### Linux — using NodeSource (recommended, gets you v20 LTS)
-
-**Debian / Ubuntu:**
-```bash
-curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
-sudo apt install -y nodejs
-```
-
-**Fedora / RHEL:**
-```bash
-curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -
-sudo dnf install -y nodejs
-```
-
-**Arch / Manjaro:**
-```bash
-sudo pacman -S nodejs npm
-```
-
-**openSUSE:**
-```bash
-sudo zypper install nodejs20
-```
-
-### Linux — using nvm (works on any distro)
-```bash
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-# restart terminal, then:
-nvm install 20
-nvm use 20
-```
-
-### Windows
-Download and run the LTS installer from [nodejs.org](https://nodejs.org/en/download).  
-npm is included — no separate install needed.
-
-**Verify:**
-```bash
-node --version   # should be v20.x or higher
-npm --version
-```
-
----
-
-## 2 — Install Csound
-
-### macOS
-```bash
-brew install csound
+brew install node@22
 ```
 
 ### Linux (Debian / Ubuntu)
 ```bash
-sudo apt update && sudo apt install csound
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+sudo apt install -y nodejs build-essential python3
 ```
 
-### Linux (Fedora / RHEL)
+### Linux (Fedora)
 ```bash
-sudo dnf install csound
-```
-
-### Linux (Arch / Manjaro)
-```bash
-sudo pacman -S csound
-```
-
-### Linux — extra build tools (needed on some distros)
-
-`better-sqlite3` (used for session memory) is a native Node module and compiles during `npm install`. If it fails, install build tools first:
-
-**Debian / Ubuntu:**
-```bash
-sudo apt install build-essential python3
-```
-
-**Fedora:**
-```bash
-sudo dnf groupinstall "Development Tools"
-sudo dnf install python3
-```
-
-**Arch:**
-```bash
-sudo pacman -S base-devel python
+curl -fsSL https://rpm.nodesource.com/setup_22.x | sudo bash -
+sudo dnf install -y nodejs gcc-c++ make python3
 ```
 
 ### Windows
-Download and run the installer from [csound.com/download](https://csound.com/download.html).  
-During install, check **"Add csound to PATH"**.
+Download Node.js 22 LTS from [nodejs.org](https://nodejs.org).
 
-**Verify:**
+**Verify:** `node --version` → v22.x
+
+---
+
+## 2 — Install Csound 7
+
+### macOS (recommended — user install)
+
 ```bash
+# After installing Csound 7 pkg to ~/Applications/Csound/
+mkdir -p ~/bin
+ln -sf ~/Applications/Csound/csound ~/bin/csound
+echo 'export PATH="$HOME/bin:$HOME/Applications/Csound:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+csound --version   # must show version 7.x
+```
+
+If Homebrew Csound 6 is installed: `brew unlink csound` so it does not shadow Csound 7.
+
+### Linux
+
+Csound 7 may need to be built from source on some distros. See [Csound GitHub](https://github.com/csound/csound) and `WORKSHOP.md` in the repo.
+
+```bash
+sudo apt install build-essential cmake libjack-jackd2-dev   # Debian/Ubuntu deps
+# build/install Csound 7, then:
 csound --version
+```
+
+### Windows
+
+Install Csound 7 from [csound.com/download](https://csound.com/download.html). Check **Add to PATH** during setup.
+
+**Verify:** `csound --version` shows **7.x** (not 6.18).
+
+---
+
+## 2.5 — Install CsoundQt 7 (optional, recommended)
+
+CsoundQt is the classic Csound IDE — great for editing, comparing with Dr.C output, and browsing the manual. Use the **Csound 7** build (v7.x beta), not the older Csound 6 releases.
+
+**Releases:** [github.com/CsoundQt/CsoundQt/releases](https://github.com/CsoundQt/CsoundQt/releases) — pick **v7.0.0-beta3** or newer from the `csoundqt7` line.
+
+### macOS
+
+1. Install **Csound 7** first (§2 above).
+2. Download `CsoundQt-*-MacOS.dmg` from the v7 release (plain version, not pythonqt).
+3. Open the DMG and drag **CsoundQt** into **Applications**.
+4. First launch: right-click → **Open** if Gatekeeper blocks it.
+5. In Dr.C Standalone: **Settings → CsoundQt** should auto-detect `/Applications/CsoundQt.app`, or use **Choose CsoundQt…**.
+
+### Linux
+
+1. Install **Csound 7** first.
+2. **Package manager** (if your distro ships a recent build):
+   ```bash
+   # Debian/Ubuntu — version may lag; prefer GitHub release if < 7.x
+   sudo apt install csoundqt
+   ```
+3. **Recommended:** download the v7 **AppImage** from GitHub releases, make executable, and run:
+   ```bash
+   chmod +x CsoundQt-*-AppImage
+   ./CsoundQt-*-AppImage
+   ```
+4. Dr.C auto-detects `csoundqt` on PATH; set **Settings → CsoundQt** if needed.
+
+### Windows
+
+1. Install **Csound 7** first and note its `bin` folder (e.g. `C:\Program Files\Csound7_x64\bin`).
+2. Download `CsoundQt-*-Win64.zip` from the **v7** GitHub release and unzip.
+3. Copy **all files** from the Csound 7 `bin` folder into the CsoundQt `bin` folder (overwrite if prompted) so CsoundQt finds `csound.exe` and plugins.
+4. Run `CsoundQt.exe` (or `CsoundQt-d-html.exe` for HTML widget support).
+5. Dr.C auto-detects under `Program Files\CsoundQt`; set path in **Settings → CsoundQt** if you use a custom folder.
+
+**In the app:** artifact panel → **Open in CsoundQt** (plain CSD) or **Open in Cabbage** (plugin UI). Saved CSDs: `~/Documents/DrC/csoundqt/`.
+
+---
+
+## 2.6 — Install Cabbage (optional, recommended)
+
+Cabbage builds live MIDI plugin UIs from Csound. Optional but recommended for the workshop — convert Dr.C artifacts and play with realtime controls.
+
+**Downloads:** [cabbageaudio.com/download](https://cabbageaudio.com/download/) · [GitHub releases](https://github.com/cabbageaudio/Cabbage/releases)
+
+### macOS
+
+1. Download the macOS DMG and drag **Cabbage** into **Applications**.
+2. First launch: right-click → **Open** if Gatekeeper blocks it.
+3. Dr.C: **Settings → Cabbage** auto-detects `/Applications/Cabbage*.app`; use **Choose Cabbage…** if needed.
+
+### Linux
+
+1. Download the Linux AppImage or package from cabbageaudio.com.
+2. **aarch64** (ARM laptops, Apple Silicon VMs): check releases for ARM builds — x86_64-only builds will not run natively.
+3. `chmod +x Cabbage-*-AppImage && ./Cabbage-*-AppImage`
+4. Dr.C auto-detects `cabbage` on PATH; set **Settings → Cabbage** if needed.
+
+**In the app:** artifact panel → **Convert → Cabbage** → **Open in Cabbage**.
+
+---
+
+## 2.7 — Install Audacity (optional, recommended)
+
+Audacity is useful for listening to Dr.C WAV exports, trimming clips, and comparing renders.
+
+### macOS
+
+```bash
+brew install --cask audacity
+```
+
+Or download from [audacityteam.org/download](https://www.audacityteam.org/download/).
+
+### Linux (Ubuntu 22.04)
+
+```bash
+sudo apt install audacity
+```
+
+Or Flatpak:
+
+```bash
+flatpak install flathub org.audacityteam.Audacity
 ```
 
 ---
 
-## 3 — Clone and Install
+## 2.8 — Install Reaper (optional, recommended)
+
+Reaper is a lightweight DAW — handy as a VST host for Cabbage exports and for multitrack workshop demos.
+
+**Download:** [reaper.fm/download.php](https://www.reaper.fm/download.php)
+
+### macOS
+
+1. Download the **macOS ARM64** (Apple Silicon) or **x86_64** (Intel) build.
+2. Drag **REAPER.app** into **Applications** (or `~/Applications`).
+3. First launch requires accepting the eval license (full license is optional).
+4. Homebrew alternative: `brew install --cask reaper` (if the cask matches your architecture).
+
+### Linux
+
+1. Download the **Linux aarch64** or **x86_64** tarball from reaper.fm.
+2. Extract and run `install-reaper.sh`, or unpack to `~/opt/REAPER` / `~/Applications/Reaper`.
+3. **Eval license:** Reaper is free to evaluate with no time limit; purchasing a license is optional.
+4. Both **aarch64** and **x86_64** Linux builds are available from the download page.
+
+---
+
+## 3 — Clone, install, configure
 
 ```bash
 git clone https://github.com/mateolarreaferro/DRC-Standalone.git
 cd DRC-Standalone
 npm install
-```
-
-`npm install` also compiles the native `better-sqlite3` module. On Linux this requires the build tools above. It typically takes 1–3 minutes.
-
----
-
-## 4 — Add Your API Key
-
-**Option A — via `.env` file (recommended for dev):**
-
-```bash
 cp .env.example .env
 ```
 
-Open `.env` and fill in at least one key:
+Edit `.env` — at minimum one key:
 
 ```
-# Gemini 2.5 Flash — free from https://aistudio.google.com/apikey
-GEMINI_API_KEY=your_key_here
-
-# Optional fallbacks
-ANTHROPIC_API_KEY=
-OPENAI_API_KEY=
+GEMINI_API_KEY=your_key_from_aistudio.google.com
 ```
-
-**Option B — via the Settings page:**  
-Launch the app (`npm run dev`), click the ⚙️ Settings icon, paste your key, and click **Test**. The key is saved locally.
-
-> The Gemini key must be an **AI Studio** key from `aistudio.google.com` — NOT a Vertex AI service account.
 
 ---
 
-## 5 — Run
+## 4 — Run (development — recommended for workshop)
 
+### macOS / Linux
 ```bash
+chmod +x scripts/launch-drc.sh
+./scripts/launch-drc.sh
+```
+
+This prepends `~/bin` and `~/Applications/Csound` so **Csound 7 wins** over system Csound 6.
+
+### Windows (PowerShell)
+```powershell
+$env:PATH = "$env:USERPROFILE\bin;$env:PATH"
 npm run dev
 ```
 
-This bundles the app and opens the Electron window. Hot reload is active — changes to source files reload automatically.
+### Workshop smoke test
+```bash
+export PATH="$HOME/bin:$HOME/Applications/Csound:$PATH"
+csound -n -d -m0 -o /tmp/fm.wav resources/workshop-starters/fm_starter.csd
+```
 
 ---
 
-## macOS First Launch Warning
+## 5 — Build installers (optional)
 
-The app is not code-signed by an Apple-registered developer. macOS Gatekeeper will block it with a message like **"DrC is damaged and can't be opened"** or **"cannot be verified."** This is expected — the app is safe.
-
-**Fix — run this once in Terminal before launching:**
 ```bash
-xattr -cr /Applications/DrC.app
+npm run dist:mac    # macOS .dmg
+npm run dist:linux  # AppImage
+npm run dist:win    # NSIS installer
 ```
 
-Replace `/Applications/DrC.app` with the actual path if you placed the app elsewhere, e.g.:
-```bash
-xattr -cr ~/Downloads/DrC.app
-```
-
-After running this command, double-click the app normally and it will open. You only need to do this once.
-
-If you still see a warning after running the command, try:
-1. **System Settings → Privacy & Security** → scroll down to the blocked app → click **Open Anyway**
-2. Or right-click the app → **Open** → **Open** in the dialog that appears
+Output in `release/`. Distribute these to attendees **after** you verify Csound 7 on each platform.
 
 ---
 
-## Linux Notes
-
-### Audio
-
-Dr.C shells out to `csound` for compile/render/play. Csound on Linux defaults to **ALSA**. If you use **JACK**:
-
-- Start JACK before launching Dr.C, or
-- Set the audio backend in your CSD's `<CsOptions>`:
-  ```
-  -+rtaudio=jack -odac
-  ```
-
-Compilation and web export work without any audio device — only playback requires one.
-
-### Electron on Linux
-
-The Electron window requires a display server. On a headless or Wayland-only machine, you may need:
+## macOS Gatekeeper (unsigned builds)
 
 ```bash
-# Wayland
-export ELECTRON_OZONE_PLATFORM_HINT=wayland
-npm run dev
-
-# or force X11 mode
-npm run dev -- --no-sandbox
+xattr -cr /path/to/DrC.app
 ```
 
-On some minimal Linux installs, Electron needs additional shared libraries. If the window fails to open, install:
-
-```bash
-# Debian/Ubuntu
-sudo apt install libnss3 libatk-bridge2.0-0 libgtk-3-0 libxss1 libasound2
-
-# Fedora
-sudo dnf install nss atk at-spi2-atk gtk3 libXScrnSaver alsa-lib
-```
-
-### Common Linux package names
-
-| Distro | Csound | Build tools |
-|---|---|---|
-| Debian/Ubuntu | `csound` | `build-essential python3` |
-| Fedora | `csound` | `gcc gcc-c++ make python3` |
-| Arch | `csound` | `base-devel python` |
-| openSUSE | `csound` | `gcc-c++ make python3` |
+Or right-click → **Open** once.
 
 ---
 
-## Windows Notes
+## Linux audio notes
 
-### SmartScreen Warning (unsigned app)
+- Compilation and web export work without audio hardware.
+- Live play needs ALSA or JACK. For JACK, add to `<CsOptions>`: `-+rtaudio=jack -odac`
+- If Electron fails to open: `sudo apt install libnss3 libatk-bridge2.0-0 libgtk-3-0 libxss1 libasound2`
 
-When you run the DrC installer or `.exe`, Windows Defender SmartScreen will show **"Windows protected your PC"** and block it. This is expected — the app is safe but not yet code-signed.
+---
 
-**Fix:**
-1. In the SmartScreen dialog, click **"More info"**
-2. Click **"Run anyway"**
+## Windows notes
 
-That's it — Windows will remember your choice and won't block it again.
-
-If SmartScreen doesn't show "More info" (this can happen on managed/work machines), right-click the `.exe` → **Properties** → check **"Unblock"** at the bottom → **OK**, then run it again.
-
-### Other Windows notes
-
-- Node.js 20 LTS from nodejs.org includes everything you need.
-- `npm install` on Windows may need **windows-build-tools** if `better-sqlite3` compilation fails:
-  ```powershell
-  npm install --global windows-build-tools
-  ```
-  Or install [Visual Studio Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) with the "Desktop development with C++" workload.
-- The `csound` CLI must be on your PATH — open a new terminal after installing and verify with `csound --version`.
+- SmartScreen: **More info** → **Run anyway** for unsigned installer.
+- If `better-sqlite3` fails: install [Visual Studio Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) with C++ workload.
 
 ---
 
 ## Troubleshooting
 
-**`npm install` fails on `better-sqlite3`**  
-Install build tools (see Linux Notes or Windows Notes above), then retry:
-```bash
-npm install
+| Problem | Fix |
+|---|---|
+| Buggy first-generation CSDs | You are on Csound **6.18** or old v1.3.0 app. Use **v1.3.1+** from git and Csound **7** on PATH. |
+| `csound: command not found` | Add Csound 7 to PATH (see §2). |
+| Silent render | Check `0dbfs = 1` in CSD; verify with workshop starter: `resources/workshop-starters/fm_starter.csd` |
+| AI no response | Set API key in `.env` or Settings → Test |
+
+---
+
+## Workshop prompt (copy-paste)
+
+```
+make a plain Csound CSD only — no Cabbage. Simple 2-operator FM synth with foscili, warm and resonant. Include score i 1 0 3 so it renders to WAV.
 ```
 
-**`csound: command not found`**  
-Csound is not on your PATH. On macOS with Homebrew: `brew link csound`. On Linux, check `which csound` and make sure the package installed correctly.
-
-**Electron window is blank / doesn't open**  
-On Linux, try the `--no-sandbox` flag or install missing Electron system libraries (see Linux Notes above).
-
-**`GEMINI_API_KEY not set` error**  
-Make sure `.env` exists at the repo root (not just `.env.example`) and contains your key with no extra spaces.
-
-**App opens but AI doesn't respond**  
-Check that your API key is valid. In the Settings page, use the **Test** button to verify the key. Also confirm you have internet access — Dr.C calls the LLM API on every message.
+Golden starters ship in `DRC-Standalone/resources/workshop-starters/`.
 
 ---
 
-## What the App Does at a Glance
-
-- **Chat panel** — describe what you want in plain English or Csound vocabulary
-- **Code panel** — generated CSD appears here, editable at any time
-- **Design tree** — non-linear version history of all explored alternatives
-- **Signal flow diagram** — auto-generated ASCII diagram explaining the synthesis chain
-- **Web export** — one command produces a self-contained HTML file using `@csound/browser`
-
----
-
-← [Back to workshop README](./README.md) | [Terminal install →](./INSTALL-TERMINAL.md)
+← [Workshop README](./README.md) | [Dr.C Terminal →](./INSTALL-TERMINAL.md)

@@ -51,6 +51,99 @@ csound --version
 
 ---
 
+## 1.5 — Install CsoundQt 7 (optional, recommended)
+
+CsoundQt is the Csound IDE for deeper editing, manual lookup, and comparing with Dr.C output. For Csound 7 workflows, use **CsoundQt v7.x** (beta), not the older Csound 6 builds.
+
+**Releases:** [github.com/CsoundQt/CsoundQt/releases](https://github.com/CsoundQt/CsoundQt/releases) — **v7.0.0-beta3** or newer.
+
+### macOS
+
+1. Install Csound 7 (§1).
+2. Download the v7 **MacOS.dmg**, drag CsoundQt into **Applications**.
+3. In Dr.C: CSD panel toolbar → **csoundqt**, or command palette → **Open in CsoundQt**.
+
+### Linux
+
+1. Install Csound 7 first.
+2. Prefer the v7 **AppImage** from GitHub if your package manager only has Csound 6-era builds:
+   ```bash
+   chmod +x CsoundQt-*-AppImage && ./CsoundQt-*-AppImage
+   ```
+3. Or: `sudo apt install csoundqt` where available.
+
+### Windows
+
+1. Install Csound 7; note `C:\Program Files\Csound7_x64\bin` (path may vary).
+2. Unzip the v7 **Win64.zip** from GitHub.
+3. Copy Csound 7 `bin` contents into the CsoundQt `bin` folder.
+4. Run `CsoundQt.exe`. Dr.C detects it automatically when on PATH or under Program Files.
+
+**In Dr.C Terminal:** CSD panel → **web** | **cabbage** | **csoundqt** | **play**.
+
+---
+
+## 1.6 — Install Cabbage (optional, recommended)
+
+Cabbage builds live MIDI plugin UIs from Csound. Optional but recommended for workshop VST workflows.
+
+**Downloads:** [cabbageaudio.com/download](https://cabbageaudio.com/download/) · [GitHub releases](https://github.com/cabbageaudio/Cabbage/releases)
+
+### macOS
+
+1. Download the macOS DMG → drag **Cabbage** into **Applications**.
+2. Dr.C: **Settings → Cabbage** or command palette → **Open in Cabbage**.
+
+### Linux
+
+1. AppImage or package from cabbageaudio.com — verify **aarch64** vs x86_64 for your machine.
+2. `chmod +x Cabbage-*-AppImage && ./Cabbage-*-AppImage`
+3. Dr.C auto-detects `cabbage` on PATH; set path in settings if needed.
+
+---
+
+## 1.7 — Install Audacity (optional, recommended)
+
+Listen to and edit Dr.C WAV exports.
+
+### macOS
+
+```bash
+brew install --cask audacity
+```
+
+Or [audacityteam.org/download](https://www.audacityteam.org/download/).
+
+### Linux (Ubuntu 22.04)
+
+```bash
+sudo apt install audacity
+```
+
+Or Flatpak: `flatpak install flathub org.audacityteam.Audacity`
+
+---
+
+## 1.8 — Install Reaper (optional, recommended)
+
+Lightweight DAW host for Cabbage exports and multitrack demos.
+
+**Download:** [reaper.fm/download.php](https://www.reaper.fm/download.php)
+
+### macOS
+
+1. Download **ARM64** (Apple Silicon) or **x86_64** (Intel) from reaper.fm.
+2. Drag **REAPER.app** to **Applications**; accept eval license on first launch.
+3. Or: `brew install --cask reaper`
+
+### Linux
+
+1. Download **aarch64** or **x86_64** Linux tarball from reaper.fm.
+2. Run `install-reaper.sh` or unpack to `~/opt/REAPER`.
+3. Eval license — no time limit; full license optional.
+
+---
+
 ## 2 — Install Bun
 
 ### macOS / Linux
@@ -91,6 +184,17 @@ bun install
 
 ---
 
+## 4 — Get an API Key (before first run)
+
+Dr.C defaults to **Gemini 2.5 Flash**, which is free with a Google AI Studio key.
+
+1. Go to [aistudio.google.com/apikey](https://aistudio.google.com/apikey)
+2. Sign in with a Google account → **Create API Key**
+3. Copy the key — you will paste it in the next step
+
+> The key must be an **AI Studio** key from `aistudio.google.com` — NOT a Vertex AI service account.
+
+---
 
 ## 5 — Add Your API Key
 
@@ -111,6 +215,20 @@ cd Dr.C/opencode && bun run dev
 ```
 
 This launches `drc`, the Dr.C TUI. You will see the welcome screen with Quick Start suggestions. Type any prompt to begin — for example: `make a simple FM synthesizer`.
+
+### Settings in the TUI
+
+Open the command palette (`Ctrl+P` or `/`) and choose **Dr.C settings**, or type **`/settings`**.
+
+From there you can:
+
+- See which API providers are connected (Gemini, Groq, Anthropic, OpenAI, Ollama)
+- Connect providers or run `drc auth login` from the terminal
+- Read free-tier rate-limit notes
+- Enable **Ollama** (local model, no API key) — install from [ollama.com](https://ollama.com/download), then `ollama pull qwen2.5-coder:7b`
+- Set **CsoundQt** and **Cabbage** paths for **csoundqt** / **cabbage** buttons on the CSD panel
+
+Settings are saved to `~/.config/drc/drc.json` under the `workshop` section.
 
 ---
 
