@@ -3,7 +3,7 @@
 Dr.C Standalone is the graphical Electron app for AI-assisted Csound development: chat + code editor, design tree, web synth export, and educational narration.
 
 **Source (build from here — do not use the old v1.3.0 .app alone):**  
-[github.com/mateolarreaferro/DRC-Standalone](https://github.com/mateolarreaferro/DRC-Standalone)
+[github.com/mateolarreaferro/Dr.C-Standalone](https://github.com/mateolarreaferro/Dr.C-Standalone)
 
 > **Csound 7 required.** The v1.3.1+ workshop build targets Csound 7 for CLI render and `@csound/browser` 7 for web apps. Csound 6.18 on PATH causes poor first-shot codegen.
 
@@ -194,8 +194,8 @@ Reaper is a lightweight DAW — handy as a VST host for Cabbage exports and for 
 ## 3 — Clone, install, configure
 
 ```bash
-git clone https://github.com/mateolarreaferro/DRC-Standalone.git
-cd DRC-Standalone
+git clone https://github.com/mateolarreaferro/Dr.C-Standalone.git
+cd Dr.C-Standalone
 npm install
 cp .env.example .env
 ```
@@ -286,7 +286,7 @@ Or right-click → **Open** once.
 make a plain Csound CSD only — no Cabbage. Simple 2-operator FM synth with foscili, warm and resonant. Include score i 1 0 3 so it renders to WAV.
 ```
 
-Golden starters ship in `DRC-Standalone/resources/workshop-starters/`.
+Golden starters ship in `Dr.C-Standalone/resources/workshop-starters/`.
 
 ---
 
